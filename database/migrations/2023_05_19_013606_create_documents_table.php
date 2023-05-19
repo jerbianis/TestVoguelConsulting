@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('dossier_racine_id')->constrained('dossiers')->onDelete('cascade');
             $table->string('nom');
             $table->string('description');
-            $table->string('fichier');
+            $table->string('fichier')->unique();
             $table->timestamps();
         });
     }
