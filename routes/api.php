@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DossierController;
 use Illuminate\Http\Request;
@@ -16,11 +17,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::apiResource('dossiers', DossierController::class);
-Route::apiResource('documents', DocumentController::class);
-Route::get('dossiers/recherche/{nom}', [DossierController::class, 'search']);
-Route::get('documents/recherche/{nom}', [DocumentController::class, 'search']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::apiResource('dossiers', DossierController::class);
+    Route::apiResource('documents', DocumentController::class);
+    Route::get('dossiers/recherche/{nom}', [DossierController::class, 'search']);
+    Route::get('documents/recherche/{nom}', [DocumentController::class, 'search']);
+});
